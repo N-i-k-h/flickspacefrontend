@@ -2,8 +2,15 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import logo from "@/assets/logo.png"; 
 
-const NAV_ITEMS = ["Home", "Spaces", "Pricing", "Contact"];
+// Updated Navigation Items
+const NAV_ITEMS = [
+  { label: "Home", path: "/" },
+  { label: "Workspaces", path: "#categories" }, // Replaced Spaces & Pricing with this
+  { label: "Contact", path: "#contact" },
+  
+];
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,16 +22,18 @@ const Header = () => {
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-50 backdrop-blur-md bg-navy/60">
+      <header className="fixed inset-x-0 top-0 z-50 backdrop-blur-md bg-navy/100">
         
         {/* NAVBAR */}
         <div className="container mx-auto px-6 h-16 flex items-center justify-between">
           
-          {/* Logo */}
-          <a href="/" className="flex items-center group">
-            <span className="text-2xl font-bold text-white tracking-tight">
-              Flick<span className="text-teal">Space</span>
-            </span>
+          {/* Logo Section */}
+          <a href="/" className="flex items-center gap-3 group ml-16">
+            <img 
+              src={logo} 
+              alt="FlickSpace Logo" 
+              className="h-16 w-auto object-contain" 
+            />
           </a>
 
           {/* Desktop Nav */}
@@ -32,11 +41,14 @@ const Header = () => {
             <nav className="flex items-center gap-6">
               {NAV_ITEMS.map((item) => (
                 <a
-                  key={item}
-                  href={item === "Home" ? "/" : `#${item.toLowerCase()}`}
-                  className="text-white/90 hover:text-teal text-sm font-medium transition-colors"
+                  key={item.label}
+                  href={item.path}
+                  className={cn(
+                    "text-sm font-medium transition-colors hover:text-teal",
+                    item.label === "Dashboard" ? "text-teal font-semibold" : "text-white/90"
+                  )}
                 >
-                  {item}
+                  {item.label}
                 </a>
               ))}
             </nav>
@@ -61,7 +73,7 @@ const Header = () => {
           </button>
         </div>
 
-        {/* MOBILE MENU (Now Seamless — No Line Above) */}
+        {/* MOBILE MENU */}
         <div
           className={cn(
             "md:hidden overflow-hidden transition-all duration-300 bg-transparent",
@@ -72,12 +84,15 @@ const Header = () => {
 
             {NAV_ITEMS.map((item) => (
               <a
-                key={item}
-                href={item === "Home" ? "/" : `#${item.toLowerCase()}`}
-                className="px-4 py-3 text-white hover:text-teal text-sm font-medium rounded-lg hover:bg-white/10 transition-colors"
+                key={item.label}
+                href={item.path}
+                className={cn(
+                  "px-4 py-3 text-sm font-medium rounded-lg hover:bg-white/10 transition-colors",
+                  item.label === "Dashboard" ? "text-teal bg-white/5" : "text-white hover:text-teal"
+                )}
                 onClick={() => setIsMenuOpen(false)}
               >
-                {item}
+                {item.label}
               </a>
             ))}
 
